@@ -2,11 +2,12 @@ import React from 'react'
 import App from 'next/app'
 import client from '../client'
 // import 'normalize.css'
+import groq from 'groq'
 import '../styles/shared.module.css'
 import '../styles/layout.css'
 
-const siteConfigQuery = `
-  *[_id == "global-config"] {
+const siteConfigQuery = groq`
+  *[_id == "global-config"][0] {
     ...,
     logo {asset->{extension, url}},
     mainNavigation[] -> {
@@ -17,8 +18,8 @@ const siteConfigQuery = `
       ...,
       "title": page->title
     }
-  }[0]
-  `
+  }
+`
 
 function MyApp({ Component, pageProps }) {
   return <Component {...pageProps} />
@@ -29,7 +30,7 @@ MyApp.getInitialProps = async (appContext) => {
   const appProps = await App.getInitialProps(appContext)
   // Add site config from sanity
   const config = await client.fetch(siteConfigQuery)
-  if (config) appProps.pageProps.config = config
+  if (config) appProps.pageProps.siteConfig = config
   return { ...appProps }
 }
 

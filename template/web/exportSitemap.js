@@ -1,26 +1,50 @@
-const {exportPathMap} = require('./next.config')
-const sm = require('sitemap')
-const fs = require('fs')
+const { SitemapStream, streamToPromise } = require('sitemap')
+const fs = require('fs/promises')
 const client = require('./client')
 
-client.fetch(`*[_id == "global-config"] {url}[0]`).then(config => {
-  exportPathMap().then(res => {
-    const sitemap = sm.createSitemap({
-      hostname: config.url,
-      cacheTime: 600000 // 600 sec (10 min) cache purge period
-    })
+const configQuery = `*[_id == "global-config"] {url}[0]`
 
-    Object.keys(res).map(page => {
-      const item = res[page]
-      const {includeInSitemap, disallowRobots, _updatedAt} = item
-      if (includeInSitemap && !disallowRobots) {
-        sitemap.add({url: page, lastmod: new Date(_updatedAt)})
+const routeQuery = `
+*[_type == 'page'] {
+  'slug': slug.current,
+  disallowRobots,
+  includeInSitemap,
+  _updatedAt
+}
+`
+
+Promise.all([configQuery, routeQuery].map(query => client.fetch(query)))
+  .then(results => {
+    const [ config, routes ] = results
+
+    const smStream = new SitemapStream({ hostname: config.url })
+
+    routes.forEach(route => {
+      const { slug, disallowRobots = false, includeInSitemap = true, _updatedAt } = route
+
+      if (!includeInSitemap || disallowRobots) {
+        return
       }
-    })
 
-    fs.writeFile(`./out/sitemap.xml`, sitemap.toString(), err => {
-      if (err) throw err
-      console.log(`sitemap.xml updated`)
-    })
+      const url = slug === '/' ? '/' : `/${slug}`
+      smStream.write({
+        url,
+        // Uncomment this if you need lastmod i.e not evergreen content
+        // lastmod: new Date(_updatedAt),
+
+        // other config
+        // changefreq: 'daily',
+        // priority: 0.5,
+      });
+    });
+
+    smStream.end()
+    return streamToPromise(smStream)
   })
-})
+  .then(sitemapRes => {
+    const output = sitemapRes.toString()
+    return fs.writeFile(`./out/sitemap.xml`, output)
+  })
+  .then(() => {
+    console.log(`sitemap.xml updated`)
+  })

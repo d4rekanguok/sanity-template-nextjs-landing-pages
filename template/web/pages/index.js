@@ -1,21 +1,37 @@
-import PropTypes from 'prop-types'
-import React from 'react'
-import Layout from '../components/Layout'
+import React, {Component} from 'react'
+import client from '../client'
+import groq from 'groq'
+import Page from '../components/Page'
 
-class IndexPage extends React.Component {
-  static propTypes = {
-    config: PropTypes.object
+const landingPageQuery = groq`
+  *[_type == "page" && slug.current == '/'][0]{
+    ...,
+    content[] {
+      ...,
+      cta {
+        ...,
+        route->
+      },
+      ctas[] {
+        ...,
+        route->
+      }
+    }
   }
+`
 
-  render () {
-    const {config} = this.props
-    return (
-      <Layout config={config}>
-        <h1>No route set</h1>
-        <h2>Setup automatic routes in sanity or custom routes in next.config.js</h2>
-      </Layout>
-    )
+const PageWrapper = (props) => {
+  return (<Page {...props} />)
+}
+export default PageWrapper
+
+export async function getStaticProps({ preview = false }) {
+  const data = await client.fetch(landingPageQuery)
+  return {
+    revalidate: 60,
+    props: {
+      preview,
+      data,
+    }
   }
 }
-
-export default IndexPage
