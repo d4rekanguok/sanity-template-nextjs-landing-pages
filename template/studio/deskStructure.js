@@ -11,6 +11,11 @@ export default () =>
     .title('Site')
     .items([
       S.listItem()
+        .title('Pages')
+        .icon(MdDashboard)
+        .schemaType('page')
+        .child(S.documentTypeList('page').title('Pages')),
+      S.listItem()
         .title('Site config')
         .icon(MdSettings)
         .child(
@@ -19,14 +24,5 @@ export default () =>
             .schemaType('site-config')
             .documentId('global-config')
         ),
-      S.listItem()
-        .title('Pages')
-        .icon(MdDashboard)
-        .schemaType('page')
-        .child(S.documentTypeList('page').title('Pages')),
-      S.listItem()
-        .title('Routes')
-        .schemaType('route')
-        .child(S.documentTypeList('route').title('Routes')),
       ...S.documentTypeListItems().filter(hiddenDocTypes)
     ])

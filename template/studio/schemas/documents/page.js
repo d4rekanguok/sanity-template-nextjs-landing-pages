@@ -49,7 +49,26 @@ export default {
       description: 'Image for sharing previews on Facebook, Twitter etc.',
       fieldset: 'metadata',
     },
+    {
+      name: 'includeInSitemap',
+      type: 'boolean',
+      title: 'Include page in sitemap',
+      description: 'For search engines. Will be added to /sitemap.xml',
+      fieldset: 'metadata',
+    },
+    {
+      name: 'disallowRobots',
+      type: 'boolean',
+      title: 'Disallow in robots.txt',
+      description: 'Hide this route for search engines',
+      fieldset: 'metadata',
+    },
   ],
+  
+  initialValue: {
+    includeInSitemap: true,
+    disallowRobots: false
+  },
 
   preview: {
     select: {

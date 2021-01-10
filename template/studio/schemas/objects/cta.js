@@ -22,9 +22,9 @@ export default {
     {
       title: 'Internal link',
       description: 'Use this to link between pages on the website',
-      name: 'route',
+      name: 'page',
       type: 'reference',
-      to: [{ type: 'route' }],
+      to: [{ type: 'page' }],
       fieldset: 'link',
     },
     {
@@ -37,11 +37,11 @@ export default {
   preview: {
     select: {
       title: 'title',
-      routeTitle: 'route.title',
-      slug: 'route.slug.current',
+      pageTitle: 'page.title',
+      slug: 'page.slug.current',
       link: 'link',
     },
-    prepare({ title, routeTitle = '', slug, link }) {
+    prepare({ title, pageTitle = '', slug, link }) {
       const subtitleExtra = slug
         ? `Slug:/${slug}/`
         : link
@@ -49,7 +49,7 @@ export default {
         : 'Not set';
       return {
         title: `${title}`,
-        subtitle: `${routeTitle} ${subtitleExtra}`,
+        subtitle: `${pageTitle} ${subtitleExtra}`,
       };
     },
   },
