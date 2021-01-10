@@ -15,6 +15,16 @@ export default {
       title: 'Title',
     },
     {
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      validation: Rule => Rule.required(),
+      options: {
+        source: 'title',
+        maxLength: 96,
+      },
+    },
+    {
       name: 'content',
       type: 'array',
       title: 'Page sections',
@@ -44,7 +54,15 @@ export default {
   preview: {
     select: {
       title: 'title',
+      subtitle: 'slug.current',
       media: 'openGraphImage',
     },
+    prepare: ({ subtitle, ...rest }) => {
+      const slug = subtitle === '/' ? '/' : `/${subtitle}`
+      return {
+        ...rest,
+        subtitle: slug
+      }
+    }
   },
 };
