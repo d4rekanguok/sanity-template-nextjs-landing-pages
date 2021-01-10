@@ -15,7 +15,6 @@ function Page({ preview, data, siteConfig: config = {}}) {
     return <div>Loading...</div>
   }
 
-
   const {
     title = 'Missing title',
     description,

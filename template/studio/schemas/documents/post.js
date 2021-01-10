@@ -35,7 +35,7 @@ export default {
     {
       name: 'body',
       title: 'Body',
-      type: 'block',
+      type: 'portableText',
     },
     {
       name: 'description',
@@ -67,8 +67,10 @@ export default {
     },
   ],
   preview: {
-    title: 'title',
-    subtitle: 'slug.current',
-    media: 'openGraphImage',
+    select: {
+      title: 'title',
+      subtitle: 'slug.current',
+      media: 'openGraphImage',
+    }
   }
 }
