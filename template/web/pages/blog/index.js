@@ -20,7 +20,10 @@ export async function getStaticProps() {
     *[_type == 'blog'] {
       _id,
       'slug': slug.current,
-      title
+      title,
+      mainImage {
+        asset ->
+      }
     }
   `)
   return {
