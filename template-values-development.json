@@ -5,8 +5,8 @@
     "private": false
   },
   "sanity": {
-    "dataset": "landing-pages",
-    "projectId": "jmhf2rn8",
+    "dataset": "production",
+    "projectId": "8rjq9cw8",
     "projectTitle": "Next.js landing pages (dev)"
   },
   "user": {
@@ -16,20 +16,20 @@
   },
   "userInput": {},
   "deployments": {
-    "studio": {
-      "url": "https://sanity-gatsby-blog-studio-rf4qpk9y.netlify.com/",
+    "web": {
+      "url": "sanity-nextjs-landing-pages-web-7en1avwy.netlify.app",
       "providerName": "netlify",
       "providerInfo": {
-        "buildHookId": "5cc04d5199df1802277a6e91",
-        "siteId": "b3b7bb87-000f-42a3-9ed3-83358be97dde"
+        "buildHookId": "5ff98420eb91b7c05028e380",
+        "siteId": "566554e1-cd2c-4df8-8607-de68f16ac6d4"
       }
     },
-    "web": {
-      "url": "https://sanity-gatsby-blog-web-skupqnos.netlify.com/",
+    "studio": {
+      "url": "https://sanity-nextjs-landing-pages-studio-ix8ntqsp.netlify.app",
       "providerName": "netlify",
       "providerInfo": {
-        "buildHookId": "5caf2962008b0b042f8df19a",
-        "siteId": "7e740745-2e2e-4427-be81-aded75334337"
+        "buildHookId": "5ff98420dfa7f2df77250320",
+        "siteId": "9108d1df-d109-447f-86ec-472e540bb7b4"
       }
     }
   }
