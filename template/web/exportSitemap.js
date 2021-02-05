@@ -1,12 +1,19 @@
 const { SitemapStream, streamToPromise } = require('sitemap')
 const fs = require('fs/promises')
 const client = require('./client')
+const groq = require('groq')
 
-const configQuery = `*[_id == "global-config"] {url}[0]`
+const configQuery = groq`*[_id == "global-config"] {url}[0]`
 
-const routeQuery = `
-*[_type == 'page'] {
+const routeQuery = groq`
+*[_type in ['page', 'blog']] {
   'slug': slug.current,
+  _type == 'page' && slug.current != '/' => {
+    'slug': '/' + slug.current
+  },
+  _type == 'blog' => {
+    'slug': '/blog/' + slug.current
+  },
   disallowRobots,
   includeInSitemap,
   _updatedAt
@@ -26,9 +33,8 @@ Promise.all([configQuery, routeQuery].map(query => client.fetch(query)))
         return
       }
 
-      const url = slug === '/' ? '/' : `/${slug}`
       smStream.write({
-        url,
+        url: slug,
         // Uncomment this if you need lastmod i.e not evergreen content
         // lastmod: new Date(_updatedAt),
 
