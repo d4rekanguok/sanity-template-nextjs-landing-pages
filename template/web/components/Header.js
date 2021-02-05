@@ -75,13 +75,7 @@ class Header extends Component {
       <div className={styles.root} data-show-nav={showNav}>
         <h1 className={styles.branding}>
           <Link
-            href={{
-              pathname: '/LandingPage',
-              query: {
-                slug: '/'
-              }
-            }}
-            as='/'
+            href="/"
           >
             <a title={title}>{this.renderLogo(logo)}</a>
           </Link>
@@ -91,17 +85,11 @@ class Header extends Component {
             {navItems &&
               navItems.map(item => {
                 const {slug, title, _id} = item
-                const isActive =
-                  router.pathname === '/LandingPage' && router.query.slug === slug.current
+                const isActive = router.query.slug === slug.current
                 return (
                   <li key={_id} className={styles.navItem}>
                     <Link
-                      href={{
-                        pathname: '/LandingPage',
-                        query: {slug: slug.current}
-                      }}
-                      as={`/${slug.current}`}
-                    >
+                      href={`/${slug.current}`}>
                       <a data-is-active={isActive ? 'true' : 'false'}>{title}</a>
                     </Link>
                   </li>
